@@ -1,10 +1,32 @@
+import time
+
 def main():
     print("Studying GCD algorithms.")
-    
-    x = 63
-    y = 42 # GCD should be 21
-
     print("The GCD of 42 and 63 is", trivial_gcd(63, 42))
+    print("The GCD of 42 and 63 is", euclid_gcd(63, 42))
+
+    # time the algorithms
+    x = 3782026
+    y = 2731479
+
+    # time the trivial algorithm
+    start = time.time() # starts a stopwatch
+    d = trivial_gcd(x, y)
+    elapsed = time.time() - start # stops the stopwatch
+
+    # print the time in a pretty way 
+    print(f"trivial_gcd took {elapsed:.6f} seconds.")
+
+    # time the Euclidean algorithm
+    start = time.time() # starts a stopwatch
+    d = euclid_gcd(x, y)
+    elapsed_2 = time.time() - start # stops the stopwatch
+
+    # print the time in a pretty way 
+    print(f"euclid_gcd took {elapsed_2:.6f} seconds.")
+
+    # the speedup is the ratio of the two times
+    print(f"euclid_gcd is {elapsed/elapsed_2:.2f} times faster than trivial_gcd.")
 
 def euclid_gcd(a:int, b:int) -> int:
     """
@@ -17,8 +39,19 @@ def euclid_gcd(a:int, b:int) -> int:
     Returns:
     int: GCD of a and b
     """
-    if (a <= 0) or (b <= 0):
-        raise ValueError("Error: negative input give to trivial_gcd()") # this should go at the beginning of the function to not damage anything
+    # solve the negative first before 0. In case it is (-1, 0) or (0, -1). 
+    if a < 0:
+        a = -a
+    if b < 0:
+        b = -b
+
+    # a = abs(a)
+    # b = abs(b)
+
+    if a == 0:
+        return b # this works even if b == 0, since GCD(0, 0) = 0
+    if b == 0:
+        return a
 
     # facts about GCD: GCD(a, b) = GCD(a-b, b) when a > b
     # GCD(63, 42) = GCD(21, 42) = GCD(21, 21) = 21 
@@ -46,8 +79,15 @@ def trivial_gcd(a:int, b:int) -> int:
     Returns:
     int: GCD of a and b
     """
-    if (a <= 0) or (b <= 0):
-        raise ValueError("Error: negative input give to trivial_gcd()") # this should go at the beginning of the function to not damage anything
+    if a < 0:
+        a = -a
+    if b < 0:
+        b = -b
+
+    if a == 0:
+        return b # this works even if b == 0, since GCD(0, 0) = 0
+    if b == 0:
+        return a
 
     d = 1
 
