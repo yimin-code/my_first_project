@@ -47,7 +47,25 @@ def main():
 
     # indices outside the range from -len(a) to len(a) - 1 produce IndexErrors
     # a[len(a)] = 7
-    # a[-len(a) - 1] = 2
+    # a[-len(a) - 1] = 2 
+
+    n = 10
+    print("Factorials up to", n, "are", factorial_array(n))
+
+    c = [3, 2, 1]
+    print(min_integer_array(c))
+
+    print("Minimum of 3, 4, and -7 is", min_integers(3, 4, -7))
+
+    # integers, strings, floats are pass by value (brand-new copy is created when they go into a function)
+    # this means that changes made inside the function do not affect the original variable outside 
+    # lists are not pass by value, they are pass by reference
+    # chnages made will modify the original data 
+
+    c = [0] * 6
+    change_first_element(c)
+
+    print(c)
 
 def factorial_array(n:int) -> list[int]:
     """
@@ -57,8 +75,66 @@ def factorial_array(n:int) -> list[int]:
     - n (int)
 
     Returns: 
-    list[int]: A list of length n+1, where the k-th element is k! for k = 0, 1, ..., n
+    list[int]: A list of length n+1, where the k-th element is k! 
     """
+
+    if n < 0:
+        raise ValueError("Error: negative input given.")
+
+    fact = [0] * (n + 1) # set number of elements
+
+    fact[0] = 1
+
+    # range through and set k! = k * (k - 1)! 
+    for k in range(1, n + 1): # if only n+1, will get fact[last element] in the next line 
+        fact[k] = fact[k-1] * k
+
+    return fact
+
+def min_integer_array(a: list[int]) -> int:
+    """
+    Returns the minimum element from list a. 
+    """
+    if len(a) == 0:
+        raise ValueError("Error: empty list given to function.")
+
+    m = a[0] # stores our minimum. should not be 0 in case of all positive numbers
+
+    # this is good:
+    # for i in range(len(a)): 
+    #     # is the current value better than what I currently have?
+    #     if a[i] < m:
+    #         # update m appropriately 
+    #         m = a[i]
+
+    for val in a: 
+        if val < m: 
+            m = val 
+
+    return m 
+
+# min() in Python can take an arbitrary number of inputs 
+# min(2, 3), min(-1, 37, 58, 109092), etc. 
+def min_integers(*numbers: int) -> int: # *numbers indicates that we can have an arbitrary number of inputs
+    # numbers is a tuple
+    if len(numbers) == 0:
+        raise ValueError("No values given to function.")
+
+    # redundant code! call the other function
+    # m = numbers[0]
+
+    # for val in numbers: 
+    #     if val < m: 
+    #         m = val 
+    m = min_integer_array(list(numbers)) # list is a built-in function that converts tuples into lists
+    
+    return m 
+
+def change_first_element(a: list[int]):
+    if len(a) == 0:
+        raise ValueError("No values given to function.")
+
+    a[0] = 1
 
 if __name__ == "__main__": 
     main()
