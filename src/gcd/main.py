@@ -2,11 +2,12 @@ import time
 
 # GCD(50, 375)  = GCD(50, 325) 
 #               = GCD(50, 25) 
-#               = GCD(25, 25) = 25 
+#               = GCD(25, 25) 
+#               = 25 
 # many substractions is division.
 #               = GCD(50, 375%50)
 #               
-# GCD(0, 25)    = GCD(50 % 25, 25) 
+# GCD(50, 25)    = GCD(50 % 25, 25) 
 #               = GCD(0, 25) 
 #               = 25
 
@@ -17,8 +18,8 @@ def main():
     print("The GCD of 42 and 63 is", faster_euclid_gcd(63, 42))
 
     # time the algorithms - use large numbers to see the difference in speed up margins - the larger the data, the more the difference in speedup.
-    x = 37820299
-    y = 27314709
+    x = 378202999
+    y = 27319
 
     # time the trivial algorithm
     start = time.time() # starts a stopwatch
@@ -44,9 +45,14 @@ def main():
     # print the time in a pretty way
     print(f"faster_euclid_gcd took {elapsed_faster_euclid:.6f} seconds.")
 
+    #####################################################################
+
     # the speedup is the ratio of the two times
     speedup = elapsed_trivial / elapsed_euclid
-    print(f"euclid_gcd is {speedup:.2f} times faster than trivial_gcd.")
+    print(f"Speedup of Euclid vs. Trivial: {speedup:.2f} times faster.")
+    speedup = elapsed_euclid / elapsed_faster_euclid
+    print(f"Speedup of Faster Euclid vs. Normal Euclid: {speedup:.2f} times faster.")
+    
 
 def faster_euclid_gcd(a:int, b:int) -> int:
     """
