@@ -1,32 +1,80 @@
 import time
 
+# GCD(50, 375)  = GCD(50, 325) 
+#               = GCD(50, 25) 
+#               = GCD(25, 25) = 25 
+# many substractions is division.
+#               = GCD(50, 375%50)
+#               
+# GCD(0, 25)    = GCD(50 % 25, 25) 
+#               = GCD(0, 25) 
+#               = 25
+
 def main():
     print("Studying GCD algorithms.")
     print("The GCD of 42 and 63 is", trivial_gcd(63, 42))
     print("The GCD of 42 and 63 is", euclid_gcd(63, 42))
+    print("The GCD of 42 and 63 is", faster_euclid_gcd(63, 42))
 
-    # time the algorithms
-    x = 3782026
-    y = 2731479
+    # time the algorithms - use large numbers to see the difference in speed up margins - the larger the data, the more the difference in speedup.
+    x = 37820299
+    y = 27314709
 
     # time the trivial algorithm
     start = time.time() # starts a stopwatch
     d = trivial_gcd(x, y)
-    elapsed = time.time() - start # stops the stopwatch
+    elapsed_trivial = time.time() - start # stops the stopwatch
 
     # print the time in a pretty way 
-    print(f"trivial_gcd took {elapsed:.6f} seconds.")
+    print(f"trivial_gcd took {elapsed_trivial:.6f} seconds.")
 
     # time the Euclidean algorithm
     start = time.time() # starts a stopwatch
     d = euclid_gcd(x, y)
-    elapsed_2 = time.time() - start # stops the stopwatch
+    elapsed_euclid = time.time() - start # stops the stopwatch
 
     # print the time in a pretty way 
-    print(f"euclid_gcd took {elapsed_2:.6f} seconds.")
+    print(f"euclid_gcd took {elapsed_euclid:.6f} seconds.")
+
+    # time the faster Euclidean algorithm
+    start = time.time() # starts a stopwatch
+    d = faster_euclid_gcd(x, y)
+    elapsed_faster_euclid = time.time() - start # stops the stopwatch
+
+    # print the time in a pretty way
+    print(f"faster_euclid_gcd took {elapsed_faster_euclid:.6f} seconds.")
 
     # the speedup is the ratio of the two times
-    print(f"euclid_gcd is {elapsed/elapsed_2:.2f} times faster than trivial_gcd.")
+    speedup = elapsed_trivial / elapsed_euclid
+    print(f"euclid_gcd is {speedup:.2f} times faster than trivial_gcd.")
+
+def faster_euclid_gcd(a:int, b:int) -> int:
+    """
+    Returns the GCD of two integers using Euclid's algorithm.
+
+    Parameters:
+    -a (int)
+    -b (int)
+
+    Returns:
+    int: GCD of a and b
+    """
+    if a < 0:
+        a = -a
+    if b < 0:
+        b = -b
+
+    # we are going to keep going for how long? 
+    while (a != 0) and (b != 0):
+        if a > b:
+            a = a % b
+        else: 
+            # know that b > a 
+            b = b % a
+
+    # if we make it here, either a or b is 0. The other one is the GCD.
+    return a + b 
+
 
 def euclid_gcd(a:int, b:int) -> int:
     """
