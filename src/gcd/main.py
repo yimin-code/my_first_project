@@ -45,7 +45,7 @@ def main():
     # print the time in a pretty way
     print(f"faster_euclid_gcd took {elapsed_faster_euclid:.6f} seconds.")
 
-    #####################################################################
+    #########################################################
 
     # the speedup is the ratio of the two times
     speedup = elapsed_trivial / elapsed_euclid
