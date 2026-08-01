@@ -9,7 +9,7 @@ def main():
     print(prime_booleans)
     print(sieve_of_eratosthenes(n))
 
-    n = 2000000
+    n = 20000
 
     # trivial timer
     start = time.time()
@@ -27,6 +27,51 @@ def main():
     speedup = elapsed_trivial/elapsed_sieve
     print(f"Speedup: {speedup:.2f}x faster")
 
+    prime_list = list_primes(23)
+    print(prime_list)
+
+    # how many prime numbers are there? 
+    # proof that there infinite prime numbers:
+
+    # how many prime numbers in <= n?
+    # is there a formula in terms of n?
+
+    # plot all primes up to n
+    print(prime_count_array(23))
+
+def prime_count_array(n: int) -> list[int]:
+    """
+    Produces a list storing the number of primes encountered up to a given interger.
+
+    Prameters:
+    -n (int)
+
+    Output: 
+    list[int]: list having length n+1 whose k-th element is equal to the number of primes less than or equal to k
+    """
+    if n < 0: 
+        raise ValueError("Error: negative integer given as input.")
+
+    # first, get all the prime values as True or False
+    prime_booleans = sieve_of_eratosthenes(n)
+
+    # next, let's make the list we care about
+    result = [0] * (n+1)
+
+    # we need to keep track of how many primes we have encountered up to a point in time
+    prime_counter = 0
+
+    # range over list of primes
+    for i, is_prime in enumerate(prime_booleans):
+        # is the current number primer?
+        if is_prime:
+            #found a prime! so update counter
+            prime_counter += 1
+        # set the current value of my list equal to number of primes encountered thus far
+        result[i] = prime_counter
+
+    return result
+
 def list_primes(n: int) -> list[int]:
     """
     Returns a list of all primes up to and (possibly including) n.
@@ -40,7 +85,22 @@ def list_primes(n: int) -> list[int]:
     if n < 0: 
         raise ValueError("Error: negative integer given as input.")
 
-    
+    # I don't know how big the list is going to be.
+
+    prime_list = [] # or list()
+
+    prime_booleans = sieve_of_eratosthenes(n)
+
+    # range through this list and identify which ones are True
+
+    for p, is_prime in enumerate(prime_booleans): 
+    # p stores index  
+    # is_prime is a variable that stores True or False
+        if is_prime:
+            # append the current integer to the list
+            prime_list.append(p)
+
+    return prime_list
 
 def sieve_of_eratosthenes(n: int) -> list[bool]:
     """
